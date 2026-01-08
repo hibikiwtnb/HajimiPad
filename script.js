@@ -72,42 +72,52 @@ document.addEventListener('DOMContentLoaded', ()=>{
   renderPads(root);
 });
 
+
+// 修正版：pad 大小只根據寬度計算，徹底避免 iOS Safari 網址列動畫影響
 function adjustPadSize(){
+  const gap = 10; // must與CSS一致
+  const padsRoot = document.querySelector('.pads-root');
+  const container = padsRoot ? padsRoot.parentElement : document.querySelector('.container');
+  let cols = window.innerWidth >= 900 ? 5 : 3;
+  const containerWidth = container ? container.clientWidth : Math.floor(window.innerWidth - 40);
+  let size = Math.floor((containerWidth - gap * (cols - 1)) / cols);
+  if(size < 48) size = 48;
+  document.documentElement.style.setProperty('--pad-size', size + 'px');
+}
+
+// 若你想保留高度自適應（僅首次載入時），可加下列一次性調整：
+function adjustPadSizeByHeightOnce(){
   const rows = 3;
-  const gap = 10; // must match CSS gap
+  const gap = 10;
   const header = document.querySelector('.navbar');
   const footer = document.querySelector('.site-footer');
   const pageHeader = document.querySelector('.page-header');
-  const padsRoot = document.querySelector('.pads-root');
-  const container = padsRoot ? padsRoot.parentElement : document.querySelector('.container');
-
   const vh = window.innerHeight;
-  const vw = window.innerWidth;
   const headerH = header ? header.offsetHeight : 0;
   const footerH = footer ? footer.offsetHeight : 0;
   const pageHeaderH = pageHeader ? pageHeader.offsetHeight : 0;
-  const extra = 48; // paddings / margins buffer
-
-  // 寬螢幕(900px以上)5列，否則3列
+  const extra = 48;
   let cols = window.innerWidth >= 900 ? 5 : 3;
-
   const availableHeight = Math.max(120, vh - headerH - footerH - pageHeaderH - extra);
   const sizeByHeight = Math.floor((availableHeight - gap * (rows - 1)) / rows);
-
+  // 只在首次載入時根據高度調整
+  const padsRoot = document.querySelector('.pads-root');
+  const container = padsRoot ? padsRoot.parentElement : document.querySelector('.container');
   const containerWidth = container ? container.clientWidth : Math.floor(window.innerWidth - 40);
   const maxWidth = Math.floor((containerWidth - gap * (cols - 1)) / cols);
-
   let size = Math.min(sizeByHeight, maxWidth);
-  if(size < 48) size = 48; // 更小的最小值以適應手機
-
+  if(size < 48) size = 48;
   document.documentElement.style.setProperty('--pad-size', size + 'px');
 }
 
 
 // 只在載入與螢幕方向改變時調整 pad 大小，避免 iOS Safari 滾動時頻繁 resize
+
+// 首次載入時先用高度自適應，之後只用寬度自適應
 document.addEventListener('DOMContentLoaded', () => {
-  adjustPadSize();
+  adjustPadSizeByHeightOnce();
+  setTimeout(adjustPadSize, 500); // 避免iOS初始高度異常
 });
 window.addEventListener('orientationchange', () => {
-  setTimeout(adjustPadSize, 300); // 延遲以等待旋轉動畫結束
+  setTimeout(adjustPadSize, 300);
 });
