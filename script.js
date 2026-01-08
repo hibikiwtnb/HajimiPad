@@ -103,10 +103,11 @@ function adjustPadSize(){
   document.documentElement.style.setProperty('--pad-size', size + 'px');
 }
 
-window.addEventListener('resize', () => {
-  adjustPadSize();
-});
 
+// 只在載入與螢幕方向改變時調整 pad 大小，避免 iOS Safari 滾動時頻繁 resize
 document.addEventListener('DOMContentLoaded', () => {
   adjustPadSize();
+});
+window.addEventListener('orientationchange', () => {
+  setTimeout(adjustPadSize, 300); // 延遲以等待旋轉動畫結束
 });
