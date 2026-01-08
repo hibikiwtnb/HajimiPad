@@ -1,21 +1,22 @@
-// 定義分組與檔名（以 readme 為準）
+// 定義分組與檔名
 const PAD_GROUPS = [
   {
     title: '哈基米原聲大碟',
     files: [
-      '私人笑声1.wav','私人笑声2.wav','私人笑声3.wav','哈基米1.wav','哈基米2.wav','南北绿豆.wav','曼波.wav','wow.wav','欧耶.wav'
+      '私人笑声1.m4a','私人笑声2.m4a','私人笑声3.m4a','哈基米1.m4a','哈基米2.m4a','南北绿豆.m4a','曼波.m4a','wow.m4a','欧耶.m4a'
     ]
   },
   {
     title: '哈基米私人音效',
     files: [
-      '哎哟我的妈.wav','阿米诺斯.wav','你哈牛魔啊.wav','你们是小丑吗.wav','干嘛.wav'
+      '哎哟我的妈.m4a','你哈牛魔啊.m4a','你们是小丑吗.m4a','阿米诺斯.m4a','干嘛.m4a'
     ]
   },
   {
     title: '网络流行私人音效',
     files: [
-      '私人音效原版.wav','土拨鼠尖叫.wav','哈？.wav','打呼声.wav','不好1.wav','不好2.wav','哇哦哦哦.wav','你干嘛.wav','钢管.wav'
+      '私人音效原版.m4a','哎哟我的妈原版.m4a','土拨鼠尖叫.m4a','哈？.m4a','打呼声.m4a','不好1.m4a','不好2.m4a','哇哦哦哦.m4a','你干嘛.m4a','钢管.m4a',
+      '冰冰冰.m4a','what！.m4a','哇——哦！.m4a','哈啊？.m4a','哦依！.m4a','乌鸦叫声.m4a','众人笑声.m4a','你别笑.m4a','啊哦.m4a'
     ]
   }
 ];
@@ -81,20 +82,23 @@ function adjustPadSize(){
   const container = padsRoot ? padsRoot.parentElement : document.querySelector('.container');
 
   const vh = window.innerHeight;
+  const vw = window.innerWidth;
   const headerH = header ? header.offsetHeight : 0;
   const footerH = footer ? footer.offsetHeight : 0;
   const pageHeaderH = pageHeader ? pageHeader.offsetHeight : 0;
   const extra = 48; // paddings / margins buffer
 
-  const availableHeight = Math.max(120, vh - headerH - footerH - pageHeaderH - extra);
+  // 寬螢幕(900px以上)5列，否則3列
+  let cols = window.innerWidth >= 900 ? 5 : 3;
 
+  const availableHeight = Math.max(120, vh - headerH - footerH - pageHeaderH - extra);
   const sizeByHeight = Math.floor((availableHeight - gap * (rows - 1)) / rows);
 
   const containerWidth = container ? container.clientWidth : Math.floor(window.innerWidth - 40);
-  const maxWidth = Math.floor((containerWidth - gap * 2) / 3);
+  const maxWidth = Math.floor((containerWidth - gap * (cols - 1)) / cols);
 
   let size = Math.min(sizeByHeight, maxWidth);
-  if(size < 60) size = 60; // reasonable minimum
+  if(size < 48) size = 48; // 更小的最小值以適應手機
 
   document.documentElement.style.setProperty('--pad-size', size + 'px');
 }

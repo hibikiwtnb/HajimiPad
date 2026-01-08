@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+  <head>
+    <meta charset="utf-8">
+    <title>MP4Tools - MP4を音声ファイルに変換します</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta content="MP4Tools - MP4を音声ファイルに変換します" name="title">
+    <meta content="MP4動画を音声ファイルに変換します" name="description">
+    <meta content="MP4,MP3,音声,音楽,変換,ウェブ" name="keywords">
+
+    <!--
+    <meta property="og:type" content="article"/>
+    <meta property="og:title" content="MP4Tools - MP4を音声ファイルに変換します"/>
+    <meta property="og:description" content="MP4動画を音声ファイルに変換します" />
+    <meta property="og:image" content="http://static.mp4tools.com/images/xxxx.jpg" />
+    <meta property="og:url" content="http://www.mp4tools.com/" />
+    <meta property="og:site_name" content="MP4Tools"/>
+    <meta content="summary" name="twitter:card" />
+    <meta content="@mp4tools" name="twitter:site" />
+    -->
+
+    <meta name="description" content="">
+    <meta name="author" content="">
+        <link href="http://netdna.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+    <script type="text/javascript" src="http://netdna.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+    
+    <link href="http://static.mp4tools.com/stylesheets/main.css" rel="stylesheet" type="text/css">
+
+    <script type="text/javascript">
+        var MSG = {
+            ERRORNOTRAK: "トラックが存在しません",
+            ERRORNOTRAKA: "音声トラックが存在しません",
+            ERRORNOTRAKV: "画像トラックが存在しません",
+            ERRORUNEXPECT: "予期しないデータです",
+            ERRORINVALIDFILE: "mp4ファイルとして読み込めません",
+            ERRORLACKAORV: "入力ファイルには音声と映像が含まれている必要があります",
+            ERRORNOIDENTICALFILES: "同じ動画から分割されたファイルを指定して下さい",
+            ERRORNODASH: "DASH形式ではありません",
+            ERRORTOOLARGE: "ファイルが大きすぎます",
+            ERRORBROWSER: "お使いのブラウザには（いまのところ）対応していません。",
+            ERROROUTOFMEMORY: "メモリが足りません",
+            ERRORDISK: "ディスクへのアクセスに失敗しました",
+            ERRORSAVEMANUALLY: "お使いのブラウザでは、結果が200MBを超えるファイルは手動で保存する必要があります",
+            termination:0
+        } ;
+        $(function(){
+            // write something
+        });
+    </script>
+    <style type="text/css">
+    </style>
+  </head>
+
+  <body>
+
+    <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-58690556-1', 'auto');
+  ga('send', 'pageview');
+</script>
+    
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/ja_JP/sdk.js#xfbml=1&version=v2.0";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+    <div class="navbar navbar-default navbar-static-top">
+      <style>
+          .body{padding-top:70px}
+      </style>
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="./">MP4Tools</a>
+        </div>
+        <div class="collapse navbar-collapse navbar-ex1-collapse">
+          <ul class="nav navbar-nav">
+            <li class="active">
+              <a href="extract">音声を抽出</a>
+            </li>
+            <li class="">
+              <a href="mux">映像と音声を結合</a>
+            </li>
+            <li class="">
+              <a href="join">分割された動画を連結</a>
+            </li>
+            <li class="">
+              <a href="normalize">DASH形式を変換</a>
+            </li>
+            <li class="">
+              <a href="check">ファイル情報</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="container">
+      <div class="row">
+          <div class="col-md-12">
+            <div id="header-message"></div>
+          <h1 class="page-header">音声を抽出する</h1>
+          <p><p>動画ファイルから、音声だけのファイルを生成します。複数のファイルを一括してドロップ（もしくはファイル指定）することも可能です。</p><p>※ MP3変換的なものと思って下さい（拡張子はm4aですが、音楽プレイヤーでMP3と同様に再生することができます）</p></p>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <div id="drop_zone">ここにファイルをドロップ</div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <input type="file" id="files" name="files[]" style="display:none" multiple="">
+          <a id="select_files" class="btn btn-block btn-primary">or ファイルを選択</a>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <table>
+            <tbody>
+              <tr>
+                  <td style="padding-right:10px" nowrap>入力</td>
+                <td width="100%">
+                  <hr>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="row">
+          <div id="input" class="col-md-12 text-left">
+              <div id="no-input">
+                  <strong>入力ファイルはありません</strong>
+              </div>
+              <div id="input-progress"></div>
+          </div>
+      </div>
+      <div id="join_options" class="row">
+        <div class="col-md-12 text-right">並び替え          <div class="btn-group" role="group" aria-label="">
+            <button type="button" class="btn btn-default active" value="added">追加順</button>
+            <button type="button" class="btn btn-default"
+            value="name">名前順</button>
+            <button type="button" class="btn btn-default"
+            value="date">日付順</button>
+          </div>
+          <a class="btn btn-primary proceed">結合する</a>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <table>
+            <tbody>
+              <tr>
+                  <td style="padding-right:10px" nowrap>出力</td>
+                <td width="100%">
+                  <hr>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="row">
+        <div id="output" class="col-md-12">
+          <div id="no-output">
+            <strong>出力データはありません</strong>
+          </div>
+          <div id="output-progress"></div>
+          <div id="textinfo"></div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12 template">
+          <div class="alert alert-dismissable alert-info">
+            <button contenteditable="false" type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+            <strong>待機中</strong>
+            <span class="glyphicon glyphicon-music"></span>
+            <span class="glyphicon glyphicon-picture"></span>$FILENAME ( $FILESIZEMB $FILESTAT)</div>
+          <div class="alert alert-dismissable alert-success">
+            <button contenteditable="false" type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+            <strong>完了</strong>
+            <span class="glyphicon glyphicon-music"></span>
+            <span class="glyphicon glyphicon-picture"></span>$MESSAGE
+            <a href="$LINK" class="alert-link" target="_blank">ダウンロードリンク</a>
+          </div>
+          <div class="alert alert-danger alert-dismissable">
+            <button contenteditable="false" type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+            <strong>失敗</strong>
+            <span class="glyphicon glyphicon-music"></span>
+            <span class="glyphicon glyphicon-picture"></span>$MESSAGE
+            <a href="$LINK" class="alert-link" target="_blank">エラーログ</a>
+          </div>
+          <div class="alert alert-danger alert-dismissable">
+            <button contenteditable="false" type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+            <strong>不明な形式</strong>
+            <span class="glyphicon glyphicon-music"></span>
+            <span class="glyphicon glyphicon-picture"></span>$MESSAGE
+            <a href="$LINK" class="alert-link" target="_blank">エラーログ</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <footer class="bs-docs-footer" role="contentinfo">
+    <div class="container">
+        <div class="bs-docs-social">
+            <ul class="bs-docs-social-buttons">
+                                <li>
+                <a href="http://b.hatena.ne.jp/entry/http://www.mp4tools.com/ja/" class="hatena-bookmark-button" data-hatena-bookmark-title="MP4Tools - 動画をブラウザ上で変換します" data-hatena-bookmark-layout="standard-balloon" data-hatena-bookmark-lang="ja" title="このエントリーをはてなブックマークに追加"><img src="https://b.st-hatena.com/images/entry-button/button-only@2x.png" alt="このエントリーをはてなブックマークに追加" width="20" height="20" style="border: none;" /></a><script type="text/javascript" src="https://b.st-hatena.com/js/bookmark_button.js" charset="utf-8" async="async"></script>
+                </li>
+                                <li>
+                <div class="fb-share-button" data-href="http://www.mp4tools.com/" data-layout="button_count"></div>
+                </li>
+                <li>
+                <a href="https://twitter.com/share" class="twitter-share-button">Tweet</a>
+                <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+                </li>
+            </ul>
+        </div>
+        <p>2015 <a href="https://twitter.com/mp4tools" data-link-color="#0069D6" data-show-count="true">@mp4tools</a></p>
+    </div>
+    </footer><script type="text/javascript" src="http://static.mp4tools.com/javascripts/mp4.js"></script>
+<script type="text/javascript" src="http://static.mp4tools.com/javascripts/common.js"></script>
+<script type="text/javascript" src="http://static.mp4tools.com/javascripts/extract.js"></script>
+</body>
+
+</html>

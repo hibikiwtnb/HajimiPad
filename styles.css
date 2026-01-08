@@ -1,3 +1,54 @@
+/* 標題區teio圖標與標題橫向排列 */
+.header-flex {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+}
+.header-teio {
+	display: block;
+	width: 85px;
+	height: 65px;
+	object-fit: contain;
+}
+.header-title-group {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+}
+@media (max-width: 600px) {
+	.header-flex {
+		gap: 10px;
+	}
+	.header-teio {
+		width: 32px;
+		height: 42px;
+	}
+}
+/* 關於區塊橫向排列（寬螢幕） */
+.about-row {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 18px;
+	margin-bottom: 8px;
+}
+.about-author {
+	font-weight: 500;
+}
+.about-link {
+	display: inline-flex;
+	align-items: center;
+	text-decoration: none;
+	color: inherit;
+	margin-right: 0;
+}
+@media (max-width: 600px) {
+	.about-row {
+		flex-direction: column;
+		align-items: flex-start;
+		gap: 6px;
+	}
+}
 /* 基本佈局 */
 :root{--container-width:980px;--accent:#0a66c2;--pad-border:#cccccc}
 *{box-sizing:border-box}
@@ -13,12 +64,18 @@ body{font-family:Arial,Helvetica,sans-serif;margin:0;color:#222;background:#f8f9
 .pads-root{margin-top:12px;margin-bottom:36px}
 .pad-group{margin-bottom:28px}
 .pad-group h3{margin:0 0 12px;font-size:18px}
+/* 預設3列 */
 .pad-grid{display:grid;grid-template-columns:repeat(3,var(--pad-size,1fr));gap:10px}
+@media (min-width: 900px) {
+	.pad-grid {
+		grid-template-columns: repeat(5, var(--pad-size,1fr));
+	}
+}
 .pad-button{background:#fff;border:1px solid var(--pad-border);display:flex;align-items:center;justify-content:center;position:relative;cursor:pointer;user-select:none;width:var(--pad-size);height:var(--pad-size);padding:6px;text-align:center;overflow:hidden}
 .pad-button-label{padding:4px;font-size:13px;color:#111;word-break:break-word}
 .pad-button:hover{border-color:var(--accent)}
 .pad-button:active::after{content:"";position:absolute;inset:0;background:rgba(0,0,0,0.12)}
 /* 響應式 */
-@media (max-width:720px){.pad-grid{grid-template-columns:repeat(2,1fr)}}
+/* 移除響應式2列，始終3列顯示 */
 @media (max-width:420px){.nav-inner{padding:10px}.brand{font-size:16px}.page-header h1{font-size:20px}}
 .site-footer{border-top:1px solid #e6e6e6;background:#fff;padding:12px 0;color:#666;text-align:center}
