@@ -1,0 +1,24 @@
+/* 基本佈局 */
+:root{--container-width:980px;--accent:#0a66c2;--pad-border:#cccccc}
+*{box-sizing:border-box}
+body{font-family:Arial,Helvetica,sans-serif;margin:0;color:#222;background:#f8f9fb}
+.container{max-width:var(--container-width);margin:0 auto;padding:20px}
+.navbar{background:#fff;border-bottom:1px solid #e6e6e6;position:sticky;top:0;z-index:10}
+.nav-inner{display:flex;align-items:center;justify-content:space-between;padding:12px 20px}
+.brand{font-weight:700}
+.nav-links a{margin-left:16px;color:#333;text-decoration:none}
+.page-header{text-align:left;padding:24px 0}
+.page-header h1{margin:0;font-size:28px}
+.subtitle{margin:6px 0 0;color:#666}
+.pads-root{margin-top:12px;margin-bottom:36px}
+.pad-group{margin-bottom:28px}
+.pad-group h3{margin:0 0 12px;font-size:18px}
+.pad-grid{display:grid;grid-template-columns:repeat(3,var(--pad-size,1fr));gap:10px}
+.pad-button{background:#fff;border:1px solid var(--pad-border);display:flex;align-items:center;justify-content:center;position:relative;cursor:pointer;user-select:none;width:var(--pad-size);height:var(--pad-size);padding:6px;text-align:center;overflow:hidden}
+.pad-button-label{padding:4px;font-size:13px;color:#111;word-break:break-word}
+.pad-button:hover{border-color:var(--accent)}
+.pad-button:active::after{content:"";position:absolute;inset:0;background:rgba(0,0,0,0.12)}
+/* 響應式 */
+@media (max-width:720px){.pad-grid{grid-template-columns:repeat(2,1fr)}}
+@media (max-width:420px){.nav-inner{padding:10px}.brand{font-size:16px}.page-header h1{font-size:20px}}
+.site-footer{border-top:1px solid #e6e6e6;background:#fff;padding:12px 0;color:#666;text-align:center}
